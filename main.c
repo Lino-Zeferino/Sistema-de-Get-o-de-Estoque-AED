@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h> // Responsavel pelo Tratamento de String
 
-//estrutura de um tipo de dado produto
+//Setrutura de um tipo de dado produto
 typedef struct{
 	int id; //identificador unico para cada produto
 	char nome[30];
@@ -10,12 +10,12 @@ typedef struct{
 	int quantidade;//quantidade do produto
 
 }Produto;
-//estrutura do no
+
 typedef struct no{
 	Produto dados;
 	struct no* prox;
 }No;
-//estrutura da lista
+
 typedef struct{
 	No* cabeca;
 	int qtd;
@@ -24,7 +24,7 @@ typedef struct{
 
 
 //////////////////////////////////////////////////////////////////////////////////
-//Prototipos das Funcoes
+//Prototipos da Funcoes
 
 void menu_produto (Lista *lista);
 Lista * criarLista();
@@ -45,7 +45,7 @@ int regarregarListaEleitorA(Lista* lista);
 int main(int argc, char *argv[]) 
 {
 
-	Lista* lista = criarLista();
+	 Lista* lista = criarLista();
 	regarregarListaEleitorA(lista);
 	
 	
@@ -55,9 +55,9 @@ int main(int argc, char *argv[])
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////
-//funcao que Aloca espaÃ§o da Memoria da lista
+//funcao que Aloca espaço da Memoria
 Lista * criarLista(){
-	Lista* li= (Lista*) malloc(sizeof(Lista));// Aloca um espaÃ§o na memoria do computador
+	Lista* li= (Lista*) malloc(sizeof(Lista));// Aloca um espaço na memoria do computador
 	li->cabeca = NULL;
 	li->qtd = 0;
 	return li;
@@ -67,25 +67,26 @@ Lista * criarLista(){
 Produto criarProduto (int id, char nome [30], float preco,int qtd) {
 	Produto p;
 	p.id = id;
-	strcpy (p.nome, nome);// copia a string da variavel nome para o nome da estrutura
+	strcpy (p.nome, nome);
 	p.preco = preco;
 	p.quantidade = qtd;
 	return p;
 }//FIM DA FUNCAO
 //FUNCOA QUERESPONSAVEL POR CRIAR UM NO E  ADICIONAR UM Produto
 No *criarNoProduto(Produto produto) {
-	No *no = (No*) malloc(sizeof(No));// Reserva espaÃ§o na memoria do computador para o no
+	No *no = (No*) malloc(sizeof(No));// Reserva espaço na memoria do computador
 	no->dados = produto;
 	no->prox = NULL;
 	return no;
 }//FIM DA FUNCAO
-// FUNCAO QUE VERIFIACA SE A LISTA DE Produto ESTA VAZIA
+// FUNCAO QUE VERIFIACA SE A LISTA DE ELITOR ESTA VAZIA
 int isVazia_Lista (Lista lista) {
-	return lista.cabeca == NULL;// retorna 1 se estiver vazia caso nÃ£o retorna 0
+	return lista.cabeca == NULL;// retorna 1 se estiver vazia caso não retorna 0
 }//FIM DA FUNCAO
 
-// FUNCAO RESPONSAVEL POR ADICIONAR UM PRODUTO NA LISTA
+// FUNCOA RESPONSAVEL POR ADICIONAR UM PRODUTO NA LISTA
 int iserir_produto(Lista *lista, No *no) {
+
 	if (isVazia_Lista(*lista)) {
 		lista->cabeca = no;
 		lista->qtd++;
@@ -114,7 +115,6 @@ int iserir_produto_temporaria(Lista *lista, No *no) {
 
 	return 1;
 }//FIM DA FUNCAO
-//FUNCAO AUXILIAR QUE RETORNA UM PRODUTO ANTERIOR
 No* anterior(Lista* lista, No*no){
 	if(no == lista->cabeca) return NULL;
 	No* aux = lista->cabeca;
@@ -156,13 +156,13 @@ int remover_produto(Lista *lista, int id) {
 	return -1;
 }//FIM DA FUNCAO
 
-// FUNCAO RESPONSAVEL POR MOSTRAR UM DETERMINADO PRODUTO
+// FUNCAO RESPONSAVEL POR MOSTRAR UM DETERMINADO ELEITOR
 
 void mostra_produto(Produto produto) {
 	printf("::::::::::::::::**PRODUTO**::::::::::::::::::::::\n");
 	printf ("Id: %d\n", produto.id);
 	printf ("Nome: %s\n", produto.nome);
-	printf ("Preco: %.2f\n", produto.preco);
+	printf ("Preco: %f\n", produto.preco);
 	printf ("Quantidade: %d\n", produto.quantidade);
 	puts (":::::::::::::::::::::::::::::::::::\n");
 }//FIM DA FUNCAO
@@ -177,12 +177,10 @@ void listar_produto(Lista lista) {
 		aux = aux->prox;
 	}
 }//FIM DA FUNCAO
-// FUNCAO RESPONSAVEL POR FAZER A PESQUISA DE UM PRODUTO
 No* pesquisar_produto(Lista*lista, int id){
 		if(isVazia_Lista(*lista)){
 			return NULL;
 		}
-		//porque nao temos na lista um produto com id negativo e nem igual a zero e um id maior que a quantidade
 		if(id > 0 && id <= lista->qtd){
 			No* aux = lista->cabeca;
 			while(aux != NULL && aux->dados.id != id){
@@ -195,8 +193,7 @@ No* pesquisar_produto(Lista*lista, int id){
 		}
 		return NULL;
 }
-// FUNCAO RESPONSAVEL POR ADICIONAR UM PRODUTO NUMA DETERMINADA POSICAO
-int iserir_produto_pos(Lista*lista, No*no, int id){
+int iserir_produto_pos(Lista*lista, No*no,int id){
 		if(isVazia_Lista(*lista)){
 			lista->cabeca = no;
 			return 1;
@@ -222,13 +219,13 @@ int iserir_produto_pos(Lista*lista, No*no, int id){
 }
 // GUARDAR ELEITOR NO ARQUIVO
 int guardarListaEleitorA( Lista* lista){
-	FILE* file = fopen("Arquivo Produtos.txt", "w");// CRAR UM ARQUIVO
-	if(lista == NULL) return -1; //lista inexistente
+	FILE* file = fopen("Arquivo Produtos.txt", "w");
+	if(lista == NULL) return -1; //Arquivo ou lista inexistente
 	if(isVazia_Lista(*lista)) return 0;// Lista sem Eleitor para guardar
 	No* no = lista->cabeca;
 	
 	while(no != NULL){
-			fprintf(file, "%d\n", no->dados.id);// PERMITE ESCREVER NO ARQUIVO
+			fprintf(file, "%d\n", no->dados.id);
 			fprintf(file, "%s\n", no->dados.nome);
 			fprintf(file, "%f\n", no->dados.preco);
 			fprintf(file, "%d\n", no->dados.quantidade);
@@ -239,11 +236,10 @@ int guardarListaEleitorA( Lista* lista){
 	return 1;
 }/*concluido*/	
 ////////////////////////////////////////////////
-// FUNCAO  RESPONSAVEL POR TRAZER OS DADOS DO SISTEMA PARA AS LISTAS
 int regarregarListaEleitorA(Lista* lista){
 	FILE* file;
 	
-file = fopen("Arquivo Produtos.txt", "r"); // LEITURA DO ARQUIVO
+file = fopen("Arquivo Produtos.txt", "r");
 	 Produto e;
 	
 	int ax = 0;
@@ -289,7 +285,7 @@ file = fopen("Arquivo Produtos.txt", "r"); // LEITURA DO ARQUIVO
 return 0;
 }//fim da funcao
 
-// FUNCAO RESPONSAVEL POR MOSTRAR UM SUB-MENU RELACIONADO AO PRODUTO
+// FUNCAO RESPONSAVEL POR MOSTRAR UM SUB-MENU RELACIONADO AO ELEITOR
 void menu_produto (Lista *lista) {
 	
 	int id, numero;
@@ -300,7 +296,7 @@ void menu_produto (Lista *lista) {
 	
 	int op;
 	do {
-		puts (":::::::::::::::***MENU DO SISTEMA DE GESTAO DE ESTOQUE***::::::::::::::::::::\n");
+		puts (":::::::::::::::::::::::::***MENU DO SISTEMA DE GESTAO DE STOQUE***::::::::::::::::::::::::::::::\n");
 	
 		puts ("1- Cadastro de Produto para Lista");
 		puts ("2- Visualizacao de Estoque  (Listar Produtos do Sistema)");
@@ -311,13 +307,13 @@ void menu_produto (Lista *lista) {
 		puts ("0- Sair");
 		printf ("Informe a opcao: ");
 		scanf ("%d", &op);
-		system ("cls || clear");//FUNCAO QUE LIMPA A TELA
+		system ("cls || clean");
 		switch (op) {
 			case 1:
 					puts ("******Cadastrando Produto******\n");
 				printf ("\nNome: ");
 				fflush (stdin);
-				scanf("%s",nome);
+				gets (nome);
 				printf ("Preco: ");
 				scanf("%f",&preco);
 				printf ("Quantidade: ");
@@ -325,17 +321,17 @@ void menu_produto (Lista *lista) {
 				lista->qtd++;
 				if(iserir_produto_temporaria(lista, criarNoProduto(criarProduto (lista->qtd, nome,preco, quantidade)))){
 					puts("Produto cadastrado com sucesso!!!");
-					system ("pause"); system ("cls || clear");
+					system ("pause"); system ("cls || clean");
 				}else{
 						puts("Erro ao cadastrar o Produto!!");
-						system ("pause"); system ("cls || clear");
-					
+						system ("pause"); system ("cls || clean");
+						system ("pause"); system ("cls || clean");
 					}
 				break;
 			case 2:
-					system ("pause"); system ("cls || clear");
+					
 						listar_produto(*lista);
-				
+				system ("pause"); system ("cls || clean");
 				
 			
 			break;
@@ -344,10 +340,10 @@ void menu_produto (Lista *lista) {
 				scanf("%d",&id);
 				if(pesquisar_produto(lista, id)== NULL){
 					puts("Nenhum Produto encontrado");
-					system ("pause"); system ("cls || clear");
+					system ("pause"); system ("cls || clean");
 				}else{
 					mostra_produto(pesquisar_produto(lista, id)->dados);
-					system ("pause"); system ("cls || clear");
+					system ("pause"); system ("cls || clean");
 				}
 				
 			break;		
@@ -357,7 +353,7 @@ void menu_produto (Lista *lista) {
 				No*aux = pesquisar_produto(lista,  id);
 				if(aux == NULL){
 					puts("Nenhum Produto encontrado com este Id");
-					system ("pause"); system ("cls || clear");
+					system ("pause"); system ("cls || clean");
 				}else{
 					int n = aux->dados.id;
 					puts (":::::::::: Alterando dados do Produto ::::::::::\n");
@@ -365,7 +361,7 @@ void menu_produto (Lista *lista) {
 					
 				printf ("\n Novo nome:\n");
 				fflush (stdin);
-				scanf("%s",nome);
+				gets (nome);
 				printf ("Novo preco:\n");
 					scanf("%f",&preco);
 				printf ("Nova quantidade: ");
@@ -374,10 +370,10 @@ void menu_produto (Lista *lista) {
 					remover_produto(lista, id);
 				if(iserir_produto_pos(lista, criarNoProduto(criarProduto (n, nome,preco,quantidade)),id)){
 					puts("Produto Alterado com Sucesso.");
-					system ("pause"); system ("cls || clear");	
+					system ("pause"); system ("cls || clean");	
 				}else{
 					puts("Erro na Alteracao do Produto.");
-					system ("pause"); system ("cls || clear");
+					system ("pause"); system ("cls || clean");
 				}
 			}	
 		
@@ -389,20 +385,23 @@ void menu_produto (Lista *lista) {
 				scanf("%d",&id);
 				if(remover_produto(lista, id)){
 					puts("Produto Eliminado com sucesso!!!");
-					system ("pause"); system ("cls || clear");
+					system ("pause"); system ("cls || clean");
 				}else{
 					puts("Erro na eliminacao do Produto.");
-					system ("pause"); system ("cls || clear");
+					system ("pause"); system ("cls || clean");
 				}	
-	
+		
+			
+				
+			
 			break;
 			case 6:
 				if(guardarListaEleitorA(lista)){
 					printf("Dados Salvos no Sistema\n");
-					system ("pause"); system ("cls || clear");
+					system ("pause"); system ("cls || clean");
 				}else{
 					printf("Erro Nao salvou!!!!\n");
-					system ("pause"); system ("cls || clear");
+					system ("pause"); system ("cls || clean");
 				
 				}
 				
@@ -418,7 +417,7 @@ void menu_produto (Lista *lista) {
 					
 					op = -1;
 				}else{
-					printf("Nao salvou!!!!\n");
+					printf("Erro Nao salvou!!!!\n");
 				
 					op = -1;
 				}
@@ -432,6 +431,7 @@ void menu_produto (Lista *lista) {
 	  }
 	} while (op != -1);
 }//FIM DA FUNCAO
+
 
 
 
